@@ -46,6 +46,7 @@ namespace Lib0.Core
 
     /// <summary>
     /// Event handler operation helper.
+    /// Tutorial ( http://development-annotations.blogspot.it/2015/07/c-complete-operation-event-handler.html ).
     /// </summary>    
     public interface IEventOperation<T> where T : EventArgs
     {
