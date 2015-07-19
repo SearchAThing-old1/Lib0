@@ -145,17 +145,32 @@ namespace Lib0.Test.UnitTest
         {
             IEventOperation op = new EventOperation(EventOperationBehaviorTypes.RemindPastEvents);
 
-            op.Fire();
+            var listener1HitCount = 0;
+            var listener2HitCount = 0;
 
-            Assert.IsTrue(op.FireCount == 1);
-            Assert.IsTrue(op.HandledCount == 0);
-
-            op.Event += (a, b) =>
             {
-            };
+                op.Fire(); // event fired ( no handlers yet connected )
+                Assert.IsTrue(op.FireCount == 1 && op.HandledCount == 0);
 
-            Assert.IsTrue(op.FireCount == 1);
-            Assert.IsTrue(op.HandledCount == 1);
+                op.Event += (a, b) => // listener1 connects and receive 1 event
+                {
+                    ++listener1HitCount;
+                };
+                Assert.IsTrue(op.FireCount == 1 && op.HandledCount == 1);
+            }
+
+            {
+                op.Fire(); // event fired ( listener1 will receive its 2-th event )
+                Assert.IsTrue(op.FireCount == 2 && op.HandledCount == 2);
+
+                op.Event += (a, b) => // listener2 connected and receive 2 events
+                {
+                    ++listener2HitCount;
+                };                
+            }
+
+            Assert.IsTrue(listener1HitCount == 2 && listener2HitCount == 2);
+            Assert.IsTrue(op.FireCount == 2 && op.HandledCount == listener1HitCount + listener2HitCount);            
         }
     }
 
