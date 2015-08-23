@@ -44,9 +44,12 @@ namespace Lib0.Test.UnitTest
 
             foreach (var method in methods)
             {
+                Console.WriteLine($"running test [{method.Name}]");
                 method.Invoke(obj, new object[] { });
             }
         }
+
+        #region event operation [tests]
 
         /// <summary>
         /// Event opertion with custom args.
@@ -172,6 +175,24 @@ namespace Lib0.Test.UnitTest
             Assert.True(listener1HitCount == 2 && listener2HitCount == 2);
             Assert.True(op.FireCount == 2 && op.HandledCount == listener1HitCount + listener2HitCount);
         }
+
+        #endregion
+
+        #region string [tests]
+
+        [Fact]
+        public void StringTest1()
+        {
+            var s1 = "Hi this is a sample";
+            var s2 = " and this is another";
+
+            Assert.True(s1.StripBegin("Hi ") == "this is a sample");
+            Assert.True(s1.StripEnd("a sample") == "Hi this is ");
+            Assert.True(s2.StripBegin("and this") == " and this is another"); // begin part not stripped cause not trimmed
+            Assert.True(s2.Trim().StripBegin("and this") == " is another");
+        }
+
+        #endregion
 
     }
 
