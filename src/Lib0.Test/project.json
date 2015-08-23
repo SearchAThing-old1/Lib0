@@ -1,34 +1,36 @@
 {
-    "version": "1.0.0-*",
-    "description": "Lib0.Test Console Application",
-    "authors": [ "Lorenzo" ],
-    "tags": [ "" ],
-    "projectUrl": "",
-    "licenseUrl": "",
+  "version": "1.0.2-*",
+  "title": "Lib0.Test Console application for unit-test.",
+  "description": "UnitTest suite for lib0.",
+  "authors": [ "Lorenzo Delana" ],
+  "tags": [ ".NetCore" ],
+  "projectUrl": "https://github.com/devel0/Lib0",
+  "licenseUrl": "http://opensource.org/licenses/MIT",
+  "copyright": "Copyright(C) 2015 Lorenzo Delana",
 
-    "dependencies": {
-        "xunit": "2.1.0-beta4-*",
-        "xunit.runner.dnx": "2.1.0-beta4-*",
-        "xunit.runner.aspnet": "2.0.0-aspnet-beta8-15070",
-        "Lib0": ""
-    },
+  "dependencies": {
+    "xunit": "2.1.0-beta4-*",
+    "xunit.runner.dnx": "2.1.0-beta4-*",
+    "xunit.runner.aspnet": "2.0.0-aspnet-beta8-15070",
+    "Lib0": ""
+  },
 
-    "commands": {
-        "Lib0.Test": "Lib0.Test"
-    },
+  "commands": {
+    "Lib0.Test": "Lib0.Test"
+  },
 
-    "frameworks": {
-        "dnx451": { },
-        "dnxcore50": {
-            "dependencies": {
-                "System.Collections": "4.0.11-beta-23220",
-                "System.Console": "4.0.0-beta-23220",
-                "System.Linq": "4.0.1-beta-23220",
-                "System.Threading": "4.0.11-beta-23220",
-                "Microsoft.CSharp": "4.0.1-beta-23220",
-                "System.Reflection": "4.1.0-beta-23220",
-                "System.Reflection.TypeExtensions": "4.0.1-beta-23220"
-            }
-        }
+  "frameworks": {
+    "dnx451": { },
+    "dnxcore50": {
+      "dependencies": {
+        "System.Collections": "4.0.11-beta-23220",
+        "System.Console": "4.0.0-beta-23220",
+        "System.Linq": "4.0.1-beta-23220",
+        "System.Threading": "4.0.11-beta-23220",
+        "Microsoft.CSharp": "4.0.1-beta-23220",
+        "System.Reflection": "4.1.0-beta-23220",
+        "System.Reflection.TypeExtensions": "4.0.1-beta-23220"
+      }
     }
+  }
 }

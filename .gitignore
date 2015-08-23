@@ -195,3 +195,4 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 /AutoGenAPIDoc
+/src/Lib0-net45/_CreateNewNuGetPackage
