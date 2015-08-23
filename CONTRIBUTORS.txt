@@ -1,5 +1,0 @@
-AUTHOR
-	Lorenzo Delana, http://development-annotations.blogsplot.it
-
-CONTRIBUTORS
-	<name>	<contributed parts>

@@ -1,0 +1,6 @@
+﻿{
+  "sdk": {
+    "version": "1.0.0-beta6"
+  },
+  "projects": ["Lib0"]
+}

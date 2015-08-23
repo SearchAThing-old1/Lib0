@@ -1,0 +1,21 @@
+{
+    "version": "1.0.2-*",
+    "description": "A library for daily use.",
+    "authors": [ "Lorenzo Delana" ],
+    "tags": [ ".NetCore" ],
+    "projectUrl": "https://github.com/devel0/Lib0",
+  "licenseUrl": "http://opensource.org/licenses/MIT",
+  "releaseNotes": "Please see changelog at ",
+
+    "dependencies": {
+        "System.Collections": "4.0.11-beta-23220",
+        "System.Linq": "4.0.1-beta-23220",
+        "System.Threading": "4.0.11-beta-23220",
+        "System.Runtime": "4.0.21-beta-23220",
+        "Microsoft.CSharp": "4.0.1-beta-23220"
+    },
+
+    "frameworks": {
+        "dotnet": { }
+    }
+}

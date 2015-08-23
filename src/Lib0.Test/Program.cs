@@ -24,13 +24,13 @@
 #endregion
 
 using Lib0.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Reflection;
 using System;
+using Xunit;
 
 namespace Lib0.Test.UnitTest
 {
-
-    [TestClass]
+    
     public class TestSuite
     {
 
@@ -38,7 +38,7 @@ namespace Lib0.Test.UnitTest
         {
             var t = typeof(TestSuite);
 
-            var methods = t.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
+            var methods = t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
             var obj = new TestSuite();
 
@@ -51,26 +51,26 @@ namespace Lib0.Test.UnitTest
         /// <summary>
         /// Event opertion with custom args.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Test1()
         {
             IEventOperation<MyEventArgs> op = new EventOperation<MyEventArgs>();
 
             op.Event += (a, b) =>
             {
-                Assert.IsTrue(b.Type == EventTypes.EventA);
+                Assert.True(b.Type == EventTypes.EventA);
             };
 
             op.Fire(null, new MyEventArgs(EventTypes.EventA));
 
-            Assert.IsTrue(op.FireCount == 1);
-            Assert.IsTrue(op.HandledCount == 1);
+            Assert.True(op.FireCount == 1);
+            Assert.True(op.HandledCount == 1);
         }
 
         /// <summary>
         /// FireCount, HandledCount.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Test2()
         {
             IEventOperation op = new EventOperation();
@@ -89,19 +89,19 @@ namespace Lib0.Test.UnitTest
             {
             };
 
-            Assert.IsTrue(op.FireCount == 1);
-            Assert.IsTrue(op.HandledCount == 2);
+            Assert.True(op.FireCount == 1);
+            Assert.True(op.HandledCount == 2);
 
             op.Fire();
 
-            Assert.IsTrue(op.FireCount == 2);
-            Assert.IsTrue(op.HandledCount == 2 + 3);
+            Assert.True(op.FireCount == 2);
+            Assert.True(op.HandledCount == 2 + 3);
         }
 
         /// <summary>
         /// Event fired, but not handler yet attached.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Test3()
         {
             IEventOperation op = new EventOperation();
@@ -112,35 +112,35 @@ namespace Lib0.Test.UnitTest
             {
             };
 
-            Assert.IsTrue(op.FireCount == 1);
-            Assert.IsTrue(op.HandledCount == 0);
+            Assert.True(op.FireCount == 1);
+            Assert.True(op.HandledCount == 0);
         }
 
         /// <summary>
         /// Be notified after the event fired.
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Test4()
         {
             IEventOperation op = new EventOperation(EventOperationBehaviorTypes.RemindPastEvents);
 
             op.Fire();
 
-            Assert.IsTrue(op.FireCount == 1);
-            Assert.IsTrue(op.HandledCount == 0);
+            Assert.True(op.FireCount == 1);
+            Assert.True(op.HandledCount == 0);
 
             op.Event += (a, b) =>
             {
             };
 
-            Assert.IsTrue(op.FireCount == 1);
-            Assert.IsTrue(op.HandledCount == 1);
+            Assert.True(op.FireCount == 1);
+            Assert.True(op.HandledCount == 1);
         }
 
         /// <summary>
         /// Be notified after the event fired (multiple listeners).
         /// </summary>
-        [TestMethod]
+        [Fact]
         public void Test5()
         {
             IEventOperation op = new EventOperation(EventOperationBehaviorTypes.RemindPastEvents);
@@ -150,28 +150,29 @@ namespace Lib0.Test.UnitTest
 
             {
                 op.Fire(); // event fired ( no handlers yet connected )
-                Assert.IsTrue(op.FireCount == 1 && op.HandledCount == 0);
+                Assert.True(op.FireCount == 1 && op.HandledCount == 0);
 
                 op.Event += (a, b) => // listener1 connects and receive 1 event
                 {
                     ++listener1HitCount;
                 };
-                Assert.IsTrue(op.FireCount == 1 && op.HandledCount == 1);
+                Assert.True(op.FireCount == 1 && op.HandledCount == 1);
             }
 
             {
                 op.Fire(); // event fired ( listener1 will receive its 2-th event )
-                Assert.IsTrue(op.FireCount == 2 && op.HandledCount == 2);
+                Assert.True(op.FireCount == 2 && op.HandledCount == 2);
 
                 op.Event += (a, b) => // listener2 connected and receive 2 events
                 {
                     ++listener2HitCount;
-                };                
+                };
             }
 
-            Assert.IsTrue(listener1HitCount == 2 && listener2HitCount == 2);
-            Assert.IsTrue(op.FireCount == 2 && op.HandledCount == listener1HitCount + listener2HitCount);            
+            Assert.True(listener1HitCount == 2 && listener2HitCount == 2);
+            Assert.True(op.FireCount == 2 && op.HandledCount == listener1HitCount + listener2HitCount);
         }
+
     }
 
     public enum EventTypes { EventA, EventB };
@@ -184,6 +185,19 @@ namespace Lib0.Test.UnitTest
         {
             Type = type;
         }
+    }
+
+    public class Program
+    {
+
+        public static void Main(string[] args)
+        {            
+            TestSuite.RunAll();
+
+            Console.WriteLine("All test done. Hit enter to exit...");
+            Console.Read();
+        }
+
     }
 
 }
