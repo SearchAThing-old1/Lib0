@@ -56,6 +56,21 @@ namespace Lib0.Core
                 return str;
         }
 
+        /// <summary>
+        /// Smart line splitter that split a text into lines whatever unix or windows line ending style.
+        /// By default its remove empty lines.
+        /// </summary>        
+        /// <param name="removeEmptyLines">If true remove empty lines.</param>        
+        public static IEnumerable<string> Lines(this string txt, bool removeEmptyLines = true)
+        {
+            var q = txt.Replace("\r\n", "\n").Split('\n');
+
+            if (removeEmptyLines)
+                return q.Where(r=>r.Trim().Length>0);
+            else
+                return q;
+        }
+
     }
 
 }

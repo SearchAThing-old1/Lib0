@@ -10,11 +10,11 @@
   "releaseNotes": "Please see changelog at https://github.com/devel0/Lib0/blob/master/src/Lib0/ChangeLog.md",
 
   "dependencies": {
+    "Microsoft.CSharp": "4.0.1-beta-23220",
     "System.Collections": "4.0.11-beta-23220",
     "System.Linq": "4.0.1-beta-23220",
-    "System.Threading": "4.0.11-beta-23220",
-    "System.Runtime": "4.0.21-beta-23220",
-    "Microsoft.CSharp": "4.0.1-beta-23220"
+    "System.Runtime": "4.0.21-beta-23220",    
+    "System.Threading": "4.0.11-beta-23220"
   },
 
   "frameworks": {

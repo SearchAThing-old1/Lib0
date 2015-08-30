@@ -27,10 +27,14 @@ using Lib0.Core;
 using System.Reflection;
 using System;
 using Xunit;
+using Lib0.Graph;
+using Lib0.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Lib0.Test.UnitTest
 {
-    
+
     public class TestSuite
     {
 
@@ -194,6 +198,110 @@ namespace Lib0.Test.UnitTest
 
         #endregion
 
+        #region circular list [tests]
+        [Fact]
+        public void CircularListTest1()
+        {
+            ICircularList<int> lst = new CircularList<int>(5);
+
+            for (int i = 0; i < 5; ++i) lst.Add(i);
+
+            // verify assert's integrity
+            Assert.True(lst.Count == 5);
+            Assert.True(lst.GetItem(0) == 0);
+            Assert.True(lst.GetItem(4) == 4);
+
+            lst.Add(5); // step out from the max size
+
+            Assert.True(lst.Count == 5);
+            Assert.True(lst.GetItem(0) == 1);
+            Assert.True(lst.GetItem(4) == 5);
+
+            // complete count items
+            for (int i = 0; i < 4; ++i) lst.Add(6 + i);
+
+            // verify assert's integrity
+            Assert.True(lst.Count == 5);
+            Assert.True(lst.GetItem(0) == 5);
+            Assert.True(lst.GetItem(4) == 9);
+        }
+
+        /// <summary>
+        /// Test enumerator
+        /// </summary>
+        [Fact]
+        public void CircularListTest2()
+        {
+            ICircularList<int> lst = new CircularList<int>(5);
+
+            for (int i = 0; i < 15; ++i) lst.Add(i);
+
+            // verify assert's integrity
+            Assert.True(lst.Count == 5);
+            Assert.True(lst.GetItem(0) == 10);
+            Assert.True(lst.GetItem(4) == 14);
+
+            var l = lst.Items.ToList();
+
+            Assert.True(l.Count == 5);
+            Assert.True(l[0] == 10);
+            Assert.True(l[4] == 14);
+        }
+        #endregion
+
+        #region monitor plot [tests]
+
+        [Fact]
+        public void MonitorPlotTest1()
+        {
+            IMonitorPlot plot = new MonitorPlot(3);
+
+            var dsmean = plot.AddDataSet("6 seconds", TimeSpan.FromSeconds(6));
+
+            var dtnow = DateTime.Now;
+            var ts = TimeSpan.FromSeconds(1);
+
+            plot.Add(new MonitorData(dtnow, 5), dtnow); dtnow += ts;
+            plot.Add(new MonitorData(dtnow, 6), dtnow); dtnow += ts;
+            plot.Add(new MonitorData(dtnow, 1), dtnow); dtnow += ts;
+            plot.Add(new MonitorData(dtnow, 2), dtnow); dtnow += ts;
+            plot.Add(new MonitorData(dtnow, 3), dtnow); dtnow += ts;
+            plot.Add(new MonitorData(dtnow, 4), dtnow); dtnow += ts;
+
+            var q1 = plot.DataSets.First(w => w.Name == "default");
+            var q1lst = q1.Points.ToList();
+            Assert.True(q1lst.Count == 3);
+            // checks that the first "default" set window move to the last three data
+            Assert.True(q1lst[0].Value.EqualsAutoTol(2));
+            Assert.True(q1lst[1].Value.EqualsAutoTol(3));
+            Assert.True(q1lst[2].Value.EqualsAutoTol(4));
+
+            // now check that the "6 seconds" dataset mean 3 points over last 6 seconds
+            // in other words it will get (5.5, 1.5, 3.5) that are means of ( (5,6), (1,2), (3,4) )
+            var meanlst = dsmean.Points.ToList();
+            Assert.True(meanlst.Count == 3);
+            Assert.True(meanlst[0].Value.EqualsAutoTol(5.5));
+            Assert.True(meanlst[1].Value.EqualsAutoTol(1.5));
+            Assert.True(meanlst[2].Value.EqualsAutoTol(3.5));
+
+            // proceed adding 2 more items
+            plot.Add(new MonitorData(dtnow, 6), dtnow); dtnow += ts;
+            plot.Add(new MonitorData(dtnow, 7), dtnow); dtnow += ts;
+            
+            q1lst = q1.Points.ToList();
+            Assert.True(q1lst.Count==3);
+            Assert.True(q1lst[0].Value.EqualsAutoTol(4));
+            Assert.True(q1lst[1].Value.EqualsAutoTol(6));
+            Assert.True(q1lst[2].Value.EqualsAutoTol(7));
+
+            // check the mean, should be (1.5, 3.5, 6.5)
+            meanlst = dsmean.Points.ToList();
+            Assert.True(meanlst.Count == 3);
+            Assert.True(meanlst[0].Value.EqualsAutoTol(1.5));
+            Assert.True(meanlst[1].Value.EqualsAutoTol(3.5));
+            Assert.True(meanlst[2].Value.EqualsAutoTol(6.5));
+        }
+        #endregion
     }
 
     public enum EventTypes { EventA, EventB };
@@ -212,7 +320,7 @@ namespace Lib0.Test.UnitTest
     {
 
         public static void Main(string[] args)
-        {            
+        {
             TestSuite.RunAll();
 
             Console.WriteLine("All test done. Hit enter to exit...");
